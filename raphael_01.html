@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js "></script>
+<title>Raphaël入門</title>
+</head>
+<body>
+	<h1>Raphaël入門</h>
+
+	<h2>円</h2>
+	<div id="svg"></div>
+	<h2>塗りつぶした円</h2>
+	<div id="svg2"></div>
+	<h2>四角形と三角形</h2>
+	<div id="svg3"></div>
+	<h2>直線</h2>
+	<div id="svg4"></div>
+	<h2>破線</h2>
+	<div id="svg5"></div>
+	<h2>ペジェ曲線</h2>
+	<div id="svg6"></div>
+	<h2>回転する三角形(click!)</h2>
+	<div id="svg7"></div>
+	<h2>アニメーションする円(click!)</h2>
+	<div id="svg8"></div>
+
+	<script>
+	//描画領域の設定
+	var paper = Raphael("svg", 800, 120);
+	//円を描画する。
+	var circle = paper.circle(100, 60, 50);
+	
+	
+	//描画領域の設定
+	var paper2 = Raphael("svg2", 800, 120);
+	//円を描画する。
+	var circle2 = paper2.circle(100, 60, 50);
+	circle2.attr({
+	    'fill' : '#87CEFA',
+	    'stroke' : '#1E90FF',
+	    'stroke-width' : 4
+	});
+	
+	
+	//描画領域の設定
+	var paper3 = Raphael("svg3", 800, 120);
+	//四角形を描画する。
+	var rect3 = paper3.rect(50, 30, 100, 50);
+	rect3.attr({
+	    'fill' : '	#87CEFA',
+	    'stroke' : '#1E90FF',
+	    'stroke-width' : 4
+	});
+	// 三角形を描画する。
+	var triangle3 = paper3.path("M250,10 L200,100 L300,100 Z");
+	triangle3.attr({
+	    'fill' : '#F08080',
+	    'stroke' : '#CD5C5C',
+	    'stroke-width' : 4
+	});
+	
+	
+	//描画領域の設定
+	var paper4 = Raphael("svg4", 800, 60);
+	// 直線を描画する。
+	var line4 = paper4.path("M50,10 L150,60 Z");
+	
+	
+	//描画領域の設定
+	var paper5 = Raphael("svg5", 800, 60);
+	// 直線を描画する。
+	var line5 = paper5.path("M50,10 L150,60 Z");
+	line5.attr({
+	    'stroke' : '#CD5C5C',
+	    'stroke-width' : 3,
+	    'stroke-dasharray' : '- '
+	});
+	
+	
+	//描画領域の設定
+	var paper6 = Raphael("svg6", 800, 120);
+	// 曲線を描画する。
+	var curveLine6 = paper6.path("M50,10 C200,10 50,110 200,110");
+	curveLine6.attr({
+	    'stroke' : '#3CB371',
+	    'stroke-width' : 3,
+	    'stroke-dasharray' : '- '
+	});
+	
+	
+	//描画領域の設定
+	var paper7 = Raphael("svg7", 800, 120);
+	// 三角形を描画する。
+	var triangle7 = paper7.path("M100,10 L50,100 L150,100 Z");
+	triangle7.attr({
+	    'fill' : '#F08080',
+	    'stroke' : '#CD5C5C',
+	    'stroke-width' : 4
+	});
+	triangle7.click(function(event){
+	    this.rotate(90);
+	});
+	
+	
+	//描画領域の設定
+	var paper8 = Raphael("svg8", 800, 120);
+	//円を描画する。
+	var circle8 = paper8.circle(100, 60, 50);
+	circle8.attr({
+	    'fill' : '#87CEFA',
+	    'stroke' : '#1E90FF',
+	    'stroke-width' : 4
+	});
+	circle8.state = 'before';
+	circle8.click(function(event){
+	    if (this.state === 'before') {
+	      this.animate({'cx':300, 'fill' : '#F08080', 'stroke' : '#CD5C5C'},
+	      1500,
+	      'bounce',
+	      function(event){
+	          this.state = 'after';
+	      });
+	    } else {
+	      this.animate({'cx':100, 'fill' : '#87CEFA', 'stroke' : '#1E90FF'},
+	      1500,
+	      'bounce',
+	      function(event){
+	          this.state = 'before';
+	      });
+	    }
+	});
+	</script>
+</body>
+</html>
