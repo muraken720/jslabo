@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js "></script>
+<title>Raphaël入門2</title>
+</head>
+<body>
+	<h1>曲線に沿って円を移動させる</h1>
+    <div id="svg"></div>
+    <script>
+		var paper = new Raphael("svg", 800, 200);
+		
+		// 曲線
+		var linePath = [
+		   ["M", 50, 30], 
+		   ["C", 200, 50, 50, 150, 200, 150]
+		];
+		
+		var curveLine = paper.path(linePath);
+		curveLine.attr({
+		   'stroke' : '#CD5C5C',
+		   'stroke-width' : 3,
+		});
+		
+		// 円
+		var circle = paper.circle(0, 0, 7);
+		circle.attr({
+		   fill : "#0000FF"
+		});
+		
+		// 曲線と円を関連づける
+		circle.line = curveLine;
+		
+		paper.customAttributes.refresh = function (v) {
+		   var len = this.line.getTotalLength();
+		   var point = this.line.getPointAtLength(v * len);
+		   return {
+		       transform: "t" + [point.x, point.y]
+		   };
+		};
+		
+		function run() {
+		    circle.animate({refresh: 1}, 1000, function () {
+		        circle.attr({refresh: 0});
+		        setTimeout(run)
+		    });
+		};
+		run();
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js "></script>
+<title>Raphaël入門2</title>
+</head>
+<body>
+	<h1>図形をドラッグして移動させる</h1>
+    <div id="svg"></div>
+    <script>
+		var paper = Raphael("svg", 800, 300); 
+		var objectMap = []; // 作成したオブジェクトを保持する配列
+		var selectId; // 選択中のオブジェクトのIDを表す。
+		var id = 0; // 長方形のID
+		
+		var rectangle = create(paper, {
+		    cx : 10,
+		    cy : 10,
+		    width : 100,
+		    height : 100,
+		    objectType : "rectangle",
+		    stroke : "#1E90FF",
+		    stroke_width : 4,
+		    fill : "#87CEFA",
+		    id : id
+		});
+		
+		// 作成した長方形を格納する
+		objectMap[id] = rectangle;    
+		
+		// 描画領域の設定
+		function create(paper, target) {
+		    var rect = paper.rect(target.cx, target.cy, target.width, target.height);
+		    rect.attr({
+		        "fill" : target.fill,
+		        "stroke" : target.stroke,
+		        "stroke-width" : target.stroke_width,
+		    });
+		    // ID要素をタグに追加する
+		    rect.node.id = target.id;
+		    rect.drag(dragOnMove, dragOnStart, dragOnEnd);
+		    return rect;
+		};
+		
+		function dragOnStart(x, y, event) {
+		    selectId = event.target.id;
+		    var rect = objectMap[selectId];
+		    rect.node.dx = 0;
+		    rect.node.dy = 0;
+		};
+		
+		function dragOnMove(dx, dy, x, y, event) {
+		    var rect = objectMap[selectId];
+		    var diffX = dx - rect.node.dx;
+		    var diffY = dy - rect.node.dy;
+		
+		    // 選択中のオブジェクトを移動させる
+		    rect.translate(diffX, diffY);
+		    // 移動量を保持する。
+		    rect.node.dx = dx;
+		    rect.node.dy = dy;
+		};
+		
+		function dragOnEnd(event) {
+		    // 選択状態を解除する
+		    selectId = null;
+		};
+    </script>
+</body>
+</html>

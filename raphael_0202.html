@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js "></script>
+<title>Raphaël入門2</title>
+</head>
+<body>
+	<h1>図形のサイズを変更する</h1>
+    <div id="svg"></div>
+    <script>
+		var paper = Raphael("svg", 800, 200); 
+
+		//円を描画する。
+		var circle = paper.circle(80, 60, 50);
+		circle.attr({
+		  'fill' : '#87CEFA',
+		  'stroke' : '#1E90FF',
+		  'stroke-width' : 4
+		});
+
+		circle.click(function(event){
+			// 幅に1.2倍に、高さを0.8倍にさせる。
+			this.scale(1.2, 0.8);
+		});
+	</script>
+</body>
+</html>
