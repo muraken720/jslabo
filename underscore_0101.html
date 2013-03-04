@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Underscore Sample</title>
+</head>
+<body>
+<script src="lib/js/underscore.js"></script>
+<script>
+  var output1 = _.template("Hello, <%= name %> !", { name:'Murata' });
+  console.log(output1);
+
+  var compiled = _.template("Hello, <%= name %> !");
+  var output2 = compiled({name:'Miyasaka'});
+  console.log(output2);
+
+  var output3 = compiled({name:'Tanimoto'});
+  console.log(output3);
+</script>
+</body>
+</html>
+

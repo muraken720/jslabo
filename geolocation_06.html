@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset=utf-8>
+  <style type="text/css">
+    #map_canvas {
+      width: 500px;
+      height: 450px;
+    }
+
+    #map_canvas .olControlAttribution {
+      font-size: 13px;
+      bottom: 3px;
+    }
+  </style>
+
+  <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js">
+  </script>
+  <script type="text/javascript">
+    var watchId;
+    var objMap;
+    var objLayer;
+    var objLonLat;
+
+    /**
+     * 初期表示処理を行う。
+     */
+    function init() {
+      if (navigator.geolocation) {
+        // Open Street Mapの初期化処理
+        objMap = new OpenLayers.Map("map_canvas");
+        objLayer = new OpenLayers.Layer.OSM();
+        objMap.addLayer(objLayer);
+
+        // GeolocationAPIにより、現在位置の取得開始
+        watchId = navigator.geolocation.watchPosition(successGetPostion, failGetPostion);
+      } else {
+        // Geolocation APIが使用できないときの処理
+        showNotSupported();
+      }
+    }
+
+    /**
+     * ユーザーの現在の位置情報を取得する。
+     */
+    function successGetPostion(position) {
+      var strResult = "緯度：" + position.coords.latitude + "<br>"
+          + "経度：" + position.coords.longitude + "<br>";
+      document.getElementById("show_result").innerHTML = strResult;
+
+      // Mapに現在位置の地図を表示する。
+      objLonLat = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
+          .transform(
+          new OpenLayers.Projection("EPSG:4326"),
+          new OpenLayers.Projection("EPSG:900913")
+      );
+      objMap.setCenter(objLonLat, 15);
+    }
+
+    /**
+     * ユーザーの現在の位置情報が取得できなかった時の処理を行う。
+     */
+    function failGetPostion(error) {
+      var strErrMsg = "";
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          strErrMsg = "位置情報の利用が許可されていません。";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          strErrMsg = "デバイスの位置を決定できませんでした。";
+          break;
+        case error.TIMEOUT:
+          strErrMsg = "タイムアウトが発生しました。";
+          break;
+      }
+
+      document.getElementById("show_result").innerHTML = strErrMsg;
+    }
+
+    /**
+     * 位置情報の監視を停止する。
+     */
+    function clearWatchPosition() {
+      navigator.geolocation.clearWatch(watchId);
+    }
+
+    /**
+     * Geolocation APIが利用できないことを表示する。
+     */
+    function showNotSupported() {
+      alert("Geolocation APIに対応していません。");
+    }
+
+  </script>
+  <title>Sample : Map View | Geolocation API</title>
+</head>
+<body onload="init();">
+<p>Geolocation APIから取得した位置情報をもとに、現在位置の地図を表示します。</p>
+
+<div id="map_canvas"></div>
+<div id="show_result"></div>
+<br/>
+<input type="button" value="現在位置更新を停止" onclick="clearWatchPosition()"/>
+</body>
+</html>

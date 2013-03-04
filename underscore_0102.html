@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Underscore Sample</title>
+</head>
+<body>
+<!-- (1)テンプレートを出力する為のエリアを定義する。 -->
+<div id="templateLoadArea"/>
+
+<!-- (2)テンプレート内容を定義する。 -->
+<script id="tmplateString" type="text/template">
+  <%- title %>
+  <%= title %>
+
+  <div id="store">
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>TEL</th>
+      </tr>
+      <% _.each(staffs, function(staff) { %>
+      <tr>
+        <td><%- staff.id %></td>
+        <td><%- staff.name %></td>
+        <td><%- staff.tel %></td>
+      </tr>
+      <% }); %>
+    </table>
+  </div>
+</script>
+
+<script src="lib/js/jquery-1.9.1.js"></script>
+<script src="lib/js/underscore.js"></script>
+<script type="text/javascript">
+  // (3)テンプレートをコンパイルする
+  var compiled = _.template($("#tmplateString").html());
+
+  // (4)適用するデータを定義する
+  var data = {
+    title:"<h2>Staff List</h2>",
+    staffs:[
+      {
+        id:"00001",
+        name:"Murata",
+        tel:"090-xxx-xxxx"
+      },
+      {
+        id:"00002",
+        name:"Miyasaka",
+        tel:"070-xxx-xxxx"
+      },
+      {
+        id:"00003",
+        name:"Tanimoto",
+        tel:"090-xxx-xxxx"
+      }
+    ]
+  }
+
+  // (5)出力要素を作成する
+  var output = compiled(data);
+
+  // (6)用意しておいたdiv領域内に出力する
+  $("#templateLoadArea").append(output);
+</script>
+</body>
+</html>

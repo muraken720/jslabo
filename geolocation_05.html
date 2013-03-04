@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset=utf-8>
+  <script>
+    var watchId;
+
+    if (navigator.geolocation) {
+      watchId = navigator.geolocation.watchPosition(successGetPosition, failGetPosition);
+    } else {
+      showNotSupported();
+    }
+
+    /**
+     * ユーザーの現在の位置情報を取得する。
+     */
+    function successGetPosition(position) {
+      var strResult = "緯度：" + position.coords.latitude + "<br>"
+          + "経度：" + position.coords.longitude + "<br>"
+          + "高度：" + position.coords.altitude + "<br>"
+          + "緯度・経度の誤差：" + position.coords.accuracy + "<br>"
+          + "高度の誤差：" + position.coords.altitudeAccuracy + "<br>"
+          + "方角：" + position.coords.heading + "<br>"
+          + "速度：" + position.coords.speed + "<br>";
+      document.getElementById("show_result").innerHTML = strResult;
+    }
+
+    /**
+     * ユーザーの現在の位置情報が取得できなかった時の処理を行う。
+     */
+    function failGetPosition(error) {
+      var strErrMsg = "";
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          strErrMsg = "位置情報の利用が許可されていません。";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          strErrMsg = "デバイスの位置を決定できませんでした。";
+          break;
+        case error.TIMEOUT:
+          strErrMsg = "タイムアウトが発生しました。";
+          break;
+      }
+      document.getElementById("show_result").innerHTML = strErrMsg;
+    }
+
+    /**
+     * 位置情報の監視を停止する。
+     */
+    function clearWatchPosition() {
+      navigator.geolocation.clearWatch(watchId);
+    }
+
+    /**
+     * Geolocation APIが利用できないことを表示する。
+     */
+    function showNotSupported() {
+      alert("Geolocation APIに対応していません。");
+    }
+
+  </script>
+  <title>Watch sample | Geolocation API</title>
+</head>
+<body>
+<p>現在位置</p>
+
+<div id="show_result"></div>
+<br/>
+<input type="button" value="位置監視を停止" onclick="clearWatchPosition()"/>
+</body>
+</html>
