@@ -20,6 +20,7 @@
     var watchId;
     var objMap;
     var objLayer;
+    var objMarkers;
     var objLonLat;
 
     /**
@@ -31,7 +32,8 @@
         objMap = new OpenLayers.Map("map_canvas");
         objLayer = new OpenLayers.Layer.OSM();
         objMap.addLayer(objLayer);
-
+        objMarkers = new OpenLayers.Layer.Markers("Markers");
+        objMap.addLayer(objMarkers);
         // GeolocationAPIにより、現在位置の取得開始
         watchId = navigator.geolocation.watchPosition(successGetPostion, failGetPostion);
       } else {
@@ -55,6 +57,15 @@
           new OpenLayers.Projection("EPSG:900913")
       );
       objMap.setCenter(objLonLat, 15);
+
+      var marker = new OpenLayers.Marker(
+          new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
+              .transform(
+              new OpenLayers.Projection("EPSG:4326"),
+              new OpenLayers.Projection("EPSG:900913")
+          )
+      );
+      objMarkers.addMarker(marker);
     }
 
     /**
