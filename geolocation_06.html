@@ -20,7 +20,7 @@
     var watchId;
     var objMap;
     var objLayer;
-    var objLonLat;
+    var objMarkers;
 
     /**
      * 初期表示処理を行う。
@@ -31,8 +31,10 @@
         objMap = new OpenLayers.Map("map_canvas");
         objLayer = new OpenLayers.Layer.OSM();
         objMap.addLayer(objLayer);
-        // GeolocationAPIにより、現在位置の取得開始
-        watchId = navigator.geolocation.watchPosition(successGetPostion, failGetPostion);
+        objMarkers = new OpenLayers.Layer.Markers("Markers");
+        objMap.addLayer(objMarkers);
+        // Geolocation APIにより、現在位置の取得開始
+        watchId = navigator.geolocation.watchPosition(successGetPosition, failGetPosition);
       } else {
         // Geolocation APIが使用できないときの処理
         showNotSupported();
@@ -42,24 +44,33 @@
     /**
      * ユーザーの現在の位置情報を取得する。
      */
-    function successGetPostion(position) {
+    function successGetPosition(position) {
       var strResult = "緯度：" + position.coords.latitude + "<br>"
           + "経度：" + position.coords.longitude + "<br>";
       document.getElementById("show_result").innerHTML = strResult;
 
       // Mapに現在位置の地図を表示する。
-      objLonLat = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
+      var lonlat = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
           .transform(
           new OpenLayers.Projection("EPSG:4326"),
           new OpenLayers.Projection("EPSG:900913")
       );
-      objMap.setCenter(objLonLat, 15);
+      objMap.setCenter(lonlat, 15);
+
+      var marker = new OpenLayers.Marker(
+          new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
+              .transform(
+              new OpenLayers.Projection("EPSG:4326"),
+              new OpenLayers.Projection("EPSG:900913")
+          )
+      );
+      objMarkers.addMarker(marker);
     }
 
     /**
      * ユーザーの現在の位置情報が取得できなかった時の処理を行う。
      */
-    function failGetPostion(error) {
+    function failGetPosition(error) {
       var strErrMsg = "";
       switch (error.code) {
         case error.PERMISSION_DENIED:
