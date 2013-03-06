@@ -21,6 +21,7 @@
     var objMap;
     var objLayer;
     var objMarkers;
+    var objLonLat;
 
     /**
      * 初期表示処理を行う。
@@ -33,7 +34,8 @@
         objMap.addLayer(objLayer);
         objMarkers = new OpenLayers.Layer.Markers("Markers");
         objMap.addLayer(objMarkers);
-        // Geolocation APIにより、現在位置の取得開始
+
+        // GeolocationAPIにより、現在位置の取得開始
         watchId = navigator.geolocation.watchPosition(successGetPosition, failGetPosition);
       } else {
         // Geolocation APIが使用できないときの処理
@@ -50,21 +52,14 @@
       document.getElementById("show_result").innerHTML = strResult;
 
       // Mapに現在位置の地図を表示する。
-      var lonlat = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
+      objLonLat = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
           .transform(
           new OpenLayers.Projection("EPSG:4326"),
           new OpenLayers.Projection("EPSG:900913")
       );
-      objMap.setCenter(lonlat, 15);
+      objMap.setCenter(objLonLat, 15);
 
-      var marker = new OpenLayers.Marker(
-          new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
-              .transform(
-              new OpenLayers.Projection("EPSG:4326"),
-              new OpenLayers.Projection("EPSG:900913")
-          )
-      );
-      objMarkers.addMarker(marker);
+      objMarkers.addMarker(new OpenLayers.Marker(objLonLat));
     }
 
     /**

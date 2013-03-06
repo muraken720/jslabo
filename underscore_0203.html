@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Underscore Sample</title>
+<script type="text/javascript" src="lib/js/underscore.js"></script>
+</head>
+<body />
+<script type="text/javascript">
+	var list = [1, 2, 3];
+	var result = _.map(list, function(value) { return value * this.multiple; }, {multiple:5});
+	console.log(result);
+</script>
+</html>

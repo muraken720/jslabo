@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Underscore Sample</title>
+  <script type="text/javascript" src="lib/js/underscore.js"></script>
+</head>
+<body/>
+<script type="text/javascript">
+  var list = ["one", "two", "three"];
+  console.log("配列の処理");
+  _.each(list, function (element) {
+    console.log(element);
+  });
+  _.each(list, function (element, index, list) {
+    console.log(index + "=" + element + " : " + list[index]);
+  });
+
+  console.log("オブジェクトの処理");
+  var object = {1:"one", 2:"two", 3:"three"};
+  _.each(object, function (value) {
+    console.log(value);
+  });
+  _.each(object, function (value, key, obj) {
+    console.log(key + "=" + value + " : " + obj[key]);
+  });
+</script>
+</html>

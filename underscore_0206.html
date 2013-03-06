@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Underscore Sample</title>
+  <script type="text/javascript" src="lib/js/underscore.js"></script>
+</head>
+<body/>
+<script type="text/javascript">
+  // (1) 先頭から順に「社員番号」「名前」「スコア」「入社年度」
+  var staffData = [
+    ["00001", "村田", 90, 2009],
+    ["00002", "宮坂", 80, 2009],
+    ["00003", "谷本", 61, 2009],
+    ["00004", "鈴木", 98, 2009],
+    ["00005", "山崎", 95, 2010],
+    ["00006", "山本", 75, 2010],
+    ["00007", "田中", 89, 2010],
+    ["00008", "吉田", 68, 2011],
+    ["00009", "山田", 82, 2011],
+    ["00010", "市川", 62, 2011],
+    ["00011", "大山", 73, 2011],
+    ["00012", "斎藤", 99, 2011],
+    ["00013", "浜田", 95, 2011],
+    ["00014", "秋山", 78, 2011],
+    ["00015", "岩崎", 79, 2012],
+    ["00016", "前田", 66, 2012],
+    ["00017", "佐藤", 82, 2012],
+    ["00018", "山村", 84, 2012],
+    ["00019", "上田", 65, 2012],
+    ["00020", "近藤", 70, 2012]
+  ];
+
+  // (2) 定義したデータをオブジェクト化
+  var staffs = _.map(staffData, function (list) {
+    return _.object(['id', 'name', 'score', 'entry'], list);
+  });
+  console.log(staffs[0]);
+  console.log(staffs[19]);
+
+  // (3) filter、map、reduceを用いて検索。最後にvalueで値を取り出し。
+  var result = _.chain(staffs)
+      .filter(function (staff) {
+        return staff.entry == 2011;
+      })
+      .map(function (staff) {
+        return staff.score;
+      })
+      .reduce(function (memo, score) {
+        return memo < score ? score : memo;
+      }, 0)
+      .value();
+
+  console.log(result);
+
+</script>
+</html>
