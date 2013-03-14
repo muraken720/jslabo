@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>CoffeeScript Sample</title>
+</head>
+<body>
+<script type="text/javascript" src="lib/js/coffee-script.js"></script>
+<script type="text/javascript">
+  // (1) functionを使ってクラス定義を行なう。
+  var JsCounter = (function () {
+    // (2) 変数宣言にはvarをつける（varをつけないとグローバル変数になる）。
+    // (3) セミコロンは書いた方が良い。省略するとブラウザごとに挙動が変わる可能性がある。
+    JsCounter.prototype.count = 0;
+
+    // (4) コンストラクタは中身がなくても記述が必要。
+    function JsCounter() {
+    }
+
+    // (5) prototypeを用いて関数を宣言する。
+    // (6) 中括弧で関数範囲を定義する。
+    // (7) 戻り値はreturnで明示する。
+    JsCounter.prototype.get = function () {
+      return this.count;
+    };
+
+    // (8) 戻り値が不要の場合はreturnを書かなければ良い。
+    JsCounter.prototype.increment = function () {
+      this.count++;
+    };
+
+    return JsCounter;
+  })();
+
+  var js = new JsCounter();
+
+  js.increment();
+  js.increment();
+  js.increment();
+
+  console.log("JsCounter: " + js.get());
+</script>
+<script type="text/coffeescript">
+  # コメント
+  # (1) 「class」でクラスの宣言を行う。
+  class CsCounter
+
+    # (2) 変数宣言にvarは不要（varをつけるとエラーになる）
+    # (3) セミコロンは不要（つけても良い）
+    count: 0
+
+    # (4) コンストラクタは省略可能。
+    # constructor: () ->
+
+    # (5) 関数の宣言は、「関数名: ->」で行う。引数を取る場合は「関数名: () ->」となる。
+    # (6) 中括弧ではなくインデントで関数範囲を定義する（中括弧をつけるとエラーになる）
+    # (7) 関数内の最後の1行が戻り値になる。
+    # (8) @はthisのエイリアス
+    get: ->
+      @count
+
+    # (9) 戻り値が不要の場合は return と書けば良い。
+    increment: ->
+      @count += 1
+      return
+
+  cs = new CsCounter
+
+  cs.increment()
+  cs.increment()
+  cs.increment()
+
+  # (10) 引数用のカッコは最低１つの引数を指定して呼び出せば省略可能
+  console.log "CsCounter: " + cs.get()
+</script>
+</body>
+</html>

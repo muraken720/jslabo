@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>CoffeeScript Sample</title>
+</head>
+<body>
+<script type="text/javascript" src="lib/js/coffee-script.js"></script>
+<script type="text/coffeescript">
+  class Counter
+    count: 0
+
+    getMessage: ->
+      # ヒアドキュメントは """ で囲んで記述する。
+      # 変数や式は #{ } で囲んで記述する。
+      """現在の値は #{@count} です。
+      100まであと #{100 - @count} です。"""
+
+    increment: ->
+        @count += 1
+
+  counter = new Counter
+
+  counter.increment()
+  counter.increment()
+
+  console.log counter.getMessage()
+</script>
+</body>
+</html>
