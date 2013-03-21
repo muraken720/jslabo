@@ -1,3 +1,3 @@
 setInterval(function () {
-  document.getElementById('clock').value = new Date() + " by ver1.5";
+  document.getElementById('clock').value = new Date();
 }, 1000);
