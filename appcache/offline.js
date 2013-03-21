@@ -1,3 +1,3 @@
 setInterval(function () {
-  document.getElementById('clock').value = "offlice";
+  document.getElementById('clock').value = "offline";
 }, 1000);
