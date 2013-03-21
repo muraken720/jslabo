@@ -4,6 +4,7 @@ CACHE MANIFEST
 CACHE:
 clock.html
 clock.css
+clock.js
 
 FALLBACK:
 clock.js offline.js
