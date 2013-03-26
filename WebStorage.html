@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>WebStorage Sample</title>
+  <style type="text/css">
+    h3 {
+      margin-top: 30px
+    }
+
+    th.title {
+      width: 200px
+    }
+  </style>
+</head>
+<body>
+<h1>Web Storage サンプル</h1>
+
+<h3>保存：setItem(key,value)</h3>
+
+<div>
+  Key：<input id="setKey" type="text"/>
+  Value：<input id="setValue" type="text"/>
+  <button onclick="setsessionStorage()">保存</button>
+</div>
+<h3>表示：getItem(key)</h3>
+
+<div>
+  Key：<input id="getKey" type="text"/>
+  <button onclick="showStorage()">表示</button>
+</div>
+<table border="1">
+  <tr>
+    <th class="title">Key</th>
+    <th class="title">Value</th>
+  </tr>
+  <tbody id="getKeyList">
+  　　
+  </tbody>
+</table>
+<h3>全表示：key(n)</h3>
+
+<div>
+  <button onclick="showAllStorage()">全表示</button>
+</div>
+<table border="1">
+  <tr>
+    <th class="title">Key</th>
+    <th class="title">Value</th>
+  </tr>
+  <tbody id="list">
+  　　
+  </tbody>
+</table>
+<h3>削除：removeItem(key)</h3>
+
+<div>
+  Key：<input id="removeKey" type="text"/>
+  <button onclick="removeStorage()">削除</button>
+</div>
+<h3>全削除：clear()</h3>
+
+<div>
+  <button onclick="removeAllStorage()">全削除</button>
+</div>
+</body>
+<script type="text/javascript">
+  // (1)ブラウザがWeb Storageを実装しているか確認する
+  if (typeof sessionStorage === 'undefined') {
+    window.alert("このブラウザにはWeb Storage機能は使用できません");
+  } else {
+    var storage = sessionStorage;
+
+    // (2)sessionStorageへの保存を行う
+    function setsessionStorage() {
+      var key = document.getElementById("setKey").value;
+      var value = document.getElementById("setValue").value;
+
+      if (key && value) {
+        storage.setItem(key, value);
+      } else {
+        alert("KeyとValueを両方とも入力してください");
+      }
+    }
+
+    // (3)sessionStorageから指定されたKeyに対応するデータを取得し表示する
+    function showStorage() {
+      var key = document.getElementById("getKey").value;
+
+      // 表をクリアする
+      var list = document.getElementById("getKeyList");
+      while (list.firstChild) {
+        list.removeChild(list.firstChild);
+      }
+
+      // KeyとValueを表示する表を作成する
+      var tr = document.createElement("tr");
+      var tdKey = document.createElement("td");
+      var tdValue = document.createElement("td");
+      list.appendChild(tr);
+      tr.appendChild(tdKey);
+      tr.appendChild(tdValue);
+      tdKey.innerHTML = key;
+      tdValue.innerHTML = storage.getItem(key);
+    }
+
+    // (4)sessionStorageから全データを取得し表示する
+    function showAllStorage() {
+      // 表をクリアする
+      var list = document.getElementById("list");
+      while (list.firstChild) {
+        list.removeChild(list.firstChild);
+      }
+
+      // 保存されている全てのKeyとValueを表示する表を作成する
+      for (var i = 0; i < storage.length; i++) {
+        var key = storage.key(i);
+
+        // sessionStorageのキーと値を表示
+        var tr = document.createElement("tr");
+        var tdKey = document.createElement("td");
+        var tdValue = document.createElement("td");
+        list.appendChild(tr);
+        tr.appendChild(tdKey);
+        tr.appendChild(tdValue);
+        tdKey.innerHTML = key;
+        tdValue.innerHTML = storage.getItem(key);
+      }
+    }
+
+    // (5)sessionStorageからKeyに対応するデータを削除
+    function removeStorage() {
+      var key = document.getElementById("removeKey").value;
+      storage.removeItem(key);
+    }
+
+    // (6)sessionStorageから全データを削除
+    function removeAllStorage() {
+      storage.clear();
+    }
+  }
+</script>
+</html>
