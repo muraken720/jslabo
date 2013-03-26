@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>WebWorkers Sample</title>
+  <script type="text/javascript">
+    var start;
+    var processing = false;
+
+    // (1) 直接実行する。
+    function direct() {
+      // (1)-1 事前準備を行なう
+      var now = start();
+
+      // (1)-2 重い処理を実行する
+      var result = doHeavyDuty();
+      processing = false;
+
+      // (1)-3 処理結果を表示する
+      document.getElementById("result").innerHTML = result;
+      document.getElementById("duration").innerHTML = new Date().getTime() - now;
+    }
+
+    // (2) setTimeoutを利用して実行する。
+    function useTimeout() {
+      var now = start();
+
+      // (2)-1 setTimeoutで500ms後に処理を実行する
+      var result = setTimeout(function () {
+        var result = doHeavyDuty();
+        processing = false;
+        document.getElementById("result").innerHTML = result;
+        document.getElementById("duration").innerHTML = new Date().getTime() - now;
+      }, 500);
+    }
+
+    // (3) Web Workersを利用して実行する
+    function useWebWorkers() {
+      // (3)-1 Workerで実行する
+      var worker = new Worker("worker2.js");
+      worker.addEventListener("message", function (e) {
+        processing = false;
+        document.getElementById("result").innerHTML = e.data;
+        document.getElementById("duration").innerHTML = new Date().getTime() - now;
+      }, false);
+
+      var now = start();
+      worker.postMessage("");
+    }
+
+    // (4) 事前準備
+    function start() {
+      // (4)-1 現在時刻の表示と、各フィールドのリセット。
+      var now = new Date();
+      document.getElementById("start").innerHTML = now.toLocaleString();
+      document.getElementById("duration").innerHTML = "";
+      document.getElementById("processing").innerHTML = "";
+      document.getElementById("result").innerHTML = "";
+
+      // (4)-2 処理継続中は100msごとに . を繋げて表示する。
+      processing = true;
+      var timer = setInterval(function () {
+        if (processing) {
+          document.getElementById("processing").innerHTML += ".";
+        } else {
+          clearInterval(timer);
+        }
+      }, 100);
+
+      return now;
+    }
+
+    // (5) 重い処理
+    function doHeavyDuty() {
+      var result = "";
+      for (var i = 0; i <= 10 * 1000 * 1000; i++) {
+        result += i;
+      }
+
+      return result.length;
+    }
+
+  </script>
+</head>
+<body>
+<button onclick="direct();">直接呼び出し</button>
+<button onclick="useTimeout();">setTimeoutを利用</button>
+<button onclick="useWebWorkers();">Web Workersを利用</button>
+<br/>
+<br/>
+開始時間 : <span id="start"></span><br/>
+経過時間 : <span id="duration"></span><br/>
+<span id="processing"></span><br/>
+処理結果 : <span id="result"></span><br/>
+</body>
+</html>

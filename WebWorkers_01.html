@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>WebWorkers Sample</title>
+  <script type="text/javascript">
+    var worker = new Worker("worker1.js");
+
+    worker.addEventListener("message", function (e) {
+      console.log(e.data);
+    }, false);
+
+    worker.postMessage("村田");
+    worker.postMessage("谷本");
+  </script>
+</head>
+<body/>
+</html>
