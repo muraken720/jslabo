@@ -83,6 +83,7 @@ $(function () {
 
   var ShowView = Backbone.View.extend({
     events: {
+      "tap a[data-role='back']": "onBack",
       "tap #view-editbtn": "onEdit",
       "tap #view-delbtn": "onDelete"
     },
@@ -96,6 +97,10 @@ $(function () {
       this.$content.html(this.model.get("content"));
       return this;
     },
+    onBack: function () {
+      window.history.back();
+      return false;
+    },
     onEdit: function () {
       app.router.navigate("edit/" + this.model.id, {trigger: true});
     },
@@ -107,6 +112,7 @@ $(function () {
 
   var AddView = Backbone.View.extend({
     events: {
+      "tap a[data-role='back']": "onBack",
       "tap #save-addbtn": "onSave"
     },
     initialize: function () {
@@ -117,6 +123,10 @@ $(function () {
       this.$title.val(this.model.get("title"));
       this.$content.val(this.model.get("content"));
       return this;
+    },
+    onBack: function () {
+      window.history.back();
+      return false;
     },
     onSave: function () {
       var _this = this;
@@ -131,6 +141,7 @@ $(function () {
 
   var EditView = AddView.extend({
     events: {
+      "tap a[data-role='back']": "onBack",
       "tap #save-editbtn": "onSave"
     },
     initialize: function () {
