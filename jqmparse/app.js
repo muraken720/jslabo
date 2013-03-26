@@ -22,7 +22,7 @@ $(function () {
     model: Memo
   });
 
-  var ListView = Parse.View.extend({
+  var ListView = Backbone.View.extend({
     initialize: function () {
       _.bindAll(this);
       this.$list = $("#memolist");
@@ -30,8 +30,10 @@ $(function () {
       this.listenTo(this.collection, "change", this.onChange);
       this.listenTo(this.collection, "remove", this.refresh);
       var _this = this;
-      this.collection.fetch().done(function () {
-        _this.render();
+      this.collection.fetch({
+        success: function () {
+          _this.render();
+        }
       });
     },
     render: function () {
@@ -57,7 +59,7 @@ $(function () {
     }
   });
 
-  var ItemView = Parse.View.extend({
+  var ItemView = Backbone.View.extend({
     tagName: "li",
     tmpl: _.template($("#tmpl-itemview").html()),
     events: {
@@ -68,7 +70,7 @@ $(function () {
       this.listenTo(this.model, "destroy", this.onDestroy);
     },
     onView: function () {
-      app.router.navigate("view/" + this.model.get("_id"), {trigger: true});
+      app.router.navigate("view/" + this.model.id, {trigger: true});
     },
     onDestroy: function () {
       this.remove();
@@ -79,7 +81,7 @@ $(function () {
     }
   });
 
-  var ShowView = Parse.View.extend({
+  var ShowView = Backbone.View.extend({
     events: {
       "tap #view-editbtn": "onEdit",
       "tap #view-delbtn": "onDelete"
@@ -95,7 +97,7 @@ $(function () {
       return this;
     },
     onEdit: function () {
-      app.router.navigate("edit/" + this.model.get("_id"), {trigger: true});
+      app.router.navigate("edit/" + this.model.id, {trigger: true});
     },
     onDelete: function () {
       this.model.destroy();
@@ -103,7 +105,7 @@ $(function () {
     }
   });
 
-  var AddView = Parse.View.extend({
+  var AddView = Backbone.View.extend({
     events: {
       "tap #save-addbtn": "onSave"
     },
@@ -118,8 +120,10 @@ $(function () {
     },
     onSave: function () {
       var _this = this;
-      this.model.save({title: this.$title.val(), content: this.$content.val()}).done(function () {
-        _this.collection.add(_this.model, {merge: true});
+      this.model.save({title: this.$title.val(), content: this.$content.val()}, {
+        success: function () {
+          _this.collection.add(_this.model, {merge: true});
+        }
       });
       app.router.navigate("", {trigger: true});
     }
@@ -135,11 +139,11 @@ $(function () {
     }
   });
 
-  var AboutView = Parse.View.extend({
+  var AboutView = Backbone.View.extend({
 
   });
 
-  var AppRouter = Parse.Router.extend({
+  var AppRouter = Backbone.Router.extend({
     routes: {
       "": "home",
       "add": "add",
@@ -184,7 +188,7 @@ $(function () {
       this.changePage(this.editView.render());
     },
     about: function () {
-     this.showDialog(this.aboutView);
+      this.showDialog(this.aboutView);
     },
     changePage: function (view) {
       $.mobile.changePage(view.$el, {changeHash: false});
@@ -196,6 +200,6 @@ $(function () {
 
   app.router = new AppRouter();
 
-  Parse.history.start();
+  Backbone.history.start();
 
 }());
