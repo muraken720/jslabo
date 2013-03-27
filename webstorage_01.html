@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Web Storage Example</title>
+</head>
+<body>
+<h1>Web Storage Example</h1>
+
+<p>consoleを開いて確認してください。</p>
+
+<script type="text/javascript">
+  // (1)ブラウザがWeb Storageを実装しているか確認する
+  if (typeof window.sessionStorage === 'undefined') {
+    alert("このブラウザはWeb Storageを使用できません");
+  } else {
+    var storage = window.sessionStorage;
+
+    // (2)sessionStorageへの保存を行う
+    storage.setItem("001", "Acroquest");
+
+    console.log("length: " + storage.length);
+    console.log(JSON.stringify(storage));
+
+    // (3)sessionStorageから指定されたKeyに対応するデータを取得する
+    var data = storage.getItem("001");
+    console.log(data);
+
+    storage.setItem("002", "Technology");
+    storage.setItem("003", "Murata");
+
+    console.log("length: " + storage.length);
+    console.log(JSON.stringify(storage));
+
+    // (4)sessionStorageから全データを取得し表示する
+    for (var i = 0; i < storage.length; i++) {
+      var key = storage.key(i);
+      console.log(i + ": " + key + ", " + storage.getItem(key));
+    }
+
+    // (5)sessionStorageからKeyに対応するデータを削除する
+    storage.removeItem("003");
+
+    console.log("length: " + storage.length);
+    console.log(JSON.stringify(storage));
+
+    // (6)sessionStorageから全データを削除する
+    storage.clear();
+
+    console.log("length: " + storage.length);
+    console.log(JSON.stringify(storage));
+  }
+</script>
+</body>
+</html>
