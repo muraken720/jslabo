@@ -122,7 +122,7 @@ $(function () {
       var _this = this;
       this.model.save({title: this.$title.val(), content: this.$content.val()}, {
         success: function () {
-          _this.collection.add(_this.model, {merge: true});
+          _this.collection.add(_this.model);
         }
       });
       app.router.navigate("", {trigger: true});
@@ -136,6 +136,11 @@ $(function () {
     initialize: function () {
       this.$title = $("#edit-title");
       this.$content = $("#edit-content");
+    },
+    onSave: function () {
+      var _this = this;
+      this.model.save({title: this.$title.val(), content: this.$content.val()});
+      app.router.navigate("", {trigger: true});
     }
   });
 
