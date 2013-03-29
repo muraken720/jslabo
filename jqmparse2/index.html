@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Memo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link href="../lib/css/jquery.mobile-1.3.0.css" rel="stylesheet">
+  <script src="../lib/js/jquery-1.9.1.js"></script>
+  <script src="jqm-setting.js"></script>
+  <script src="../lib/js/jquery.mobile-1.3.0.js"></script>
+  <script src="../lib/js/underscore.js"></script>
+  <script src="../lib/js/parse-1.2.2.min.js"></script>
+  <script src="../lib/js/backbone.js"></script>
+</head>
+
+<body>
+
+<div data-role="page" id="login">
+  <div data-role="header">
+    <h1>Memo</h1>
+    <a id="login-signupbtn" class="ui-btn-right" data-icon="plus">SignUp</a>
+  </div>
+  <div data-role="content">
+    <div data-role="filedcontain">
+      <fieldset data-role="controlgroup">
+        <legend>Log In</legend>
+        <input type="text" id="login-username" placeholder="Username"/>
+        <input type="password" id="login-password" placeholder="Password"/>
+      </fieldset>
+      <a id="loginbtn" data-role="button">Log In</a>
+      <div id="login-message" style="display:none"></div>
+    </div>
+  </div>
+  <div data-role="footer" class="ui-bar" data-position="fixed">
+    <a href="#info-dialog" data-icon="info" data-rel="dialog">About</a>
+  </div>
+</div>
+
+<div data-role="page" id="signup">
+  <div data-role="header">
+    <a data-rel="back" data-icon="back">Back</a>
+    <h1>Memo</h1>
+  </div>
+  <div data-role="content">
+    <div data-role="filedcontain">
+      <fieldset data-role="controlgroup">
+        <legend>Sign Up</legend>
+        <input type="text" id="signup-username" placeholder="Username"/>
+        <input type="password" id="signup-password" placeholder="Create a Password"/>
+      </fieldset>
+      <a id="signupbtn" data-role="button">Sign Up</a>
+    </div>
+    <div id="signup-message" style="display:none"></div>
+  </div>
+  <div data-role="footer" class="ui-bar" data-position="fixed">
+    <a href="#info-dialog" data-icon="info" data-rel="dialog">About</a>
+  </div>
+</div>
+
+<div data-role="page" id="index" data-add-back-btn="false">
+  <div data-role="header">
+    <a href="./index.html" id="logoutbtn" class="ui-bnt" data-icon="back">Logout</a>
+    <h1>Memo</h1>
+    <a href="#add" class="ui-btn-right" data-icon="plus">Add</a>
+  </div>
+
+  <div data-role="content">
+    <ul id="memolist" data-role="listview" data-inset="true"></ul>
+  </div>
+
+  <div data-role="footer" class="ui-bar" data-position="fixed">
+    <a href="#info-dialog" data-icon="info" data-rel="dialog">About</a>
+  </div>
+</div>
+
+<div data-role="page" id="add">
+  <div data-role="header">
+    <a href="#" data-rel="back" data-icon="back">Back</a>
+
+    <h1>Memo Add</h1>
+    <a href="#add" class="ui-btn-right" data-icon="plus">Add</a>
+  </div>
+
+  <div data-role="content">
+    <div data-role="filedcontain">
+      <fieldset data-role="controlgroup">
+        <legend>Memo</legend>
+        <input type="text" id="add-title" placeholder="Title"/>
+        <textarea id="add-content" placeholder="Content"></textarea>
+      </fieldset>
+    </div>
+  </div>
+
+  <div data-role="footer" class="ui-bar" data-position="fixed">
+    <a id="save-addbtn" data-icon="check">Save</a>
+  </div>
+</div>
+
+<div data-role="page" id="view">
+  <div data-role="header">
+    <a href="#" data-rel="back" data-icon="back">Back</a>
+
+    <h1>Memo View</h1>
+    <a href="#add" class="ui-btn-right" data-icon="plus">Add</a>
+  </div>
+
+  <div data-role="content">
+    <div data-role="filedcontain">
+      <h2 id="view-title"></h2>
+
+      <p id="view-content"></p>
+    </div>
+  </div>
+
+  <div class="ui-bar" data-position="fixed" data-role="footer" data-role=
+      "controlgroup" data-type="horizontal">
+    <a id="view-editbtn" data-icon="gear">Edit</a>
+    <a id="view-delbtn" data-icon="delete">Delete</a>
+  </div>
+</div>
+
+<div data-role="page" id="edit">
+  <div data-role="header">
+    <a href="#" data-rel="back" data-icon="back">Back</a>
+
+    <h1>Memo Edit</h1>
+    <a href="#add" class="ui-btn-right" data-icon="plus">Add</a>
+  </div>
+
+  <div data-role="content">
+    <div data-role="filedcontain">
+      <fieldset data-role="controlgroup">
+        <legend>Memo</legend>
+        <input type="text" id="edit-title" placeholder="Title"/>
+        <textarea id="edit-content" placeholder="Content"></textarea>
+      </fieldset>
+    </div>
+  </div>
+
+  <div data-role="footer" class="ui-bar" data-position="fixed">
+    <a data-icon="check" id="save-editbtn">Save</a>
+  </div>
+</div>
+
+<div data-role="page" id="info-dialog" data-close-btn="none">
+  <div data-role="header">
+    <a href="#" data-rel="back" data-icon="delete" data-iconpos="notext">Close</a>
+
+    <h1>About</h1>
+  </div>
+
+  <div data-role="content">
+    This is a RESTful Memo Application using jQuery Mobile, Backbone.js, Node.js, MongoDB,
+    mongoose and express.
+  </div>
+</div>
+
+<script type="text/template" id="tmpl-itemview">
+  <a class="view">
+    <h2><%= title %></h2>
+
+    <p><%= content %></p>
+  </a>
+</script>
+<script src="app.js"></script>
+
+</body>
+</html>
