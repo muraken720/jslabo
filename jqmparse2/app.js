@@ -62,7 +62,7 @@ $(function () {
     refresh: function () {
       this.$list.listview("refresh");
     },
-    onLogout: function() {
+    onLogout: function () {
       Parse.User.logOut();
     }
   });
@@ -174,7 +174,7 @@ $(function () {
       var _this = this;
       Parse.User.logIn(this.$username.val(), this.$paswword.val(), {
         success: function (user) {
-          app.router.home();
+          app.router.navigate("", {trigger: true});
         },
         error: function (user, error) {
           _this.$message.html("Invalid username or password. Please try again.").show();
@@ -183,7 +183,7 @@ $(function () {
       });
     },
     toSignup: function () {
-      app.router.signup();
+      app.router.navigate("signup", {trigger: true})
     }
   });
 
@@ -204,18 +204,17 @@ $(function () {
       var user = new Parse.User();
       user.set({username: this.$username.val(), password: this.$paswword.val()});
       user.signUp(null, {
-        success: function(user) {
-          app.router.home();
+        success: function (user) {
+          app.router.navigate("", {trigger: true});
         },
-        error: function(user, error) {
+        error: function (user, error) {
           _this.$message.html(error.message).show();
           _this.$signupbtn.removeAttr("disabled");
         }
       });
     },
     toLogin: function () {
-      app.router.login();
-//      this.$el.dialog("close");
+      app.router.navigate("login", {trigger: true})
     }
   });
 
@@ -225,7 +224,9 @@ $(function () {
       "add": "add",
       "view/:id": "show",
       "edit/:id": "edit",
-      "info-dialog": "about"
+      "info-dialog": "about",
+      "login": "login",
+      "signup": "signup"
     },
     initialize: function () {
       _.bindAll(this);
@@ -240,7 +241,7 @@ $(function () {
       this.collection = new MemoList();
 
       this.listView = new ListView({el: $("#index"), collection: this.collection});
-      this.listView.$el.on('pagebeforeshow', this.home);
+      this.listView.$el.on('pagebeforeshow', this.checkLogin);
 
       this.showView = new ShowView({el: $("#view")});
 
@@ -263,8 +264,12 @@ $(function () {
           this.listView.init();
         }
         this.changePage(this.listView);
-      } else {
-        this.login();
+      }
+    },
+    checkLogin: function () {
+      var currentUser = Parse.User.current();
+      if (!currentUser) {
+          this.navigate("login", {trigger: true})
       }
     },
     login: function () {
