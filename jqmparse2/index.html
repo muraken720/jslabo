@@ -17,51 +17,9 @@
 
 <body>
 
-<div data-role="page" id="login">
+<div data-role="page" id="index">
   <div data-role="header">
-    <h1>Memo</h1>
-    <a id="login-signupbtn" class="ui-btn-right" data-icon="plus">SignUp</a>
-  </div>
-  <div data-role="content">
-    <div data-role="filedcontain">
-      <fieldset data-role="controlgroup">
-        <legend>Log In</legend>
-        <input type="text" id="login-username" placeholder="Username"/>
-        <input type="password" id="login-password" placeholder="Password"/>
-      </fieldset>
-      <a id="loginbtn" data-role="button">Log In</a>
-      <div id="login-message" style="display:none"></div>
-    </div>
-  </div>
-  <div data-role="footer" class="ui-bar" data-position="fixed">
-    <a href="#info-dialog" data-icon="info" data-rel="dialog">About</a>
-  </div>
-</div>
-
-<div data-role="page" id="signup">
-  <div data-role="header">
-    <a data-rel="back" data-icon="back">Back</a>
-    <h1>Memo</h1>
-  </div>
-  <div data-role="content">
-    <div data-role="filedcontain">
-      <fieldset data-role="controlgroup">
-        <legend>Sign Up</legend>
-        <input type="text" id="signup-username" placeholder="Username"/>
-        <input type="password" id="signup-password" placeholder="Create a Password"/>
-      </fieldset>
-      <a id="signupbtn" data-role="button">Sign Up</a>
-    </div>
-    <div id="signup-message" style="display:none"></div>
-  </div>
-  <div data-role="footer" class="ui-bar" data-position="fixed">
-    <a href="#info-dialog" data-icon="info" data-rel="dialog">About</a>
-  </div>
-</div>
-
-<div data-role="page" id="index" data-add-back-btn="false">
-  <div data-role="header">
-    <a href="./" id="logoutbtn" class="ui-bnt" data-icon="back">Logout</a>
+    <a href="./index.html" id="logoutbtn" class="ui-bnt" data-icon="back">Logout</a>
     <h1>Memo</h1>
     <a href="#add" class="ui-btn-right" data-icon="plus">Add</a>
   </div>
@@ -154,6 +112,42 @@
   <div data-role="content">
     This is a RESTful Memo Application using jQuery Mobile, Backbone.js, Node.js, MongoDB,
     mongoose and express.
+  </div>
+</div>
+
+<div data-role="page" id="login" data-close-btn="none">
+  <div data-role="header">
+    <h1>Memo</h1>
+    <a id="login-signupbtn" class="ui-btn-right" data-icon="plus">SignUp</a>
+  </div>
+  <div data-role="content">
+    <div data-role="filedcontain">
+      <fieldset data-role="controlgroup">
+        <legend>Log In</legend>
+        <input type="text" id="login-username" placeholder="Username"/>
+        <input type="password" id="login-password" placeholder="Password"/>
+      </fieldset>
+      <a id="loginbtn" data-role="button">Log In</a>
+      <div id="login-message" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="signup" data-close-btn="none">
+  <div data-role="header">
+    <h1>Memo</h1>
+    <a id="signup-loginbtn" class="ui-btn-right" data-icon="plus">LogIn</a>
+  </div>
+  <div data-role="content">
+    <div data-role="filedcontain">
+      <fieldset data-role="controlgroup">
+        <legend>Sign Up</legend>
+        <input type="text" id="signup-username" placeholder="Username"/>
+        <input type="password" id="signup-password" placeholder="Create a Password"/>
+      </fieldset>
+      <a id="signupbtn" data-role="button">Sign Up</a>
+    </div>
+    <div id="signup-message" style="display:none"></div>
   </div>
 </div>
 

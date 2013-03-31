@@ -161,7 +161,7 @@ $(function () {
   var LoginView = Backbone.View.extend({
     events: {
       "tap #loginbtn": "onLogin",
-      "tap #login-signupbtn": "onSignup"
+      "tap #login-signupbtn": "toSignup"
     },
     initialize: function () {
       _.bindAll(this);
@@ -182,14 +182,15 @@ $(function () {
         }
       });
     },
-    onSignup: function () {
+    toSignup: function () {
       app.router.signup();
     }
   });
 
   var SignupView = Backbone.View.extend({
     events: {
-      "tap #signupbtn": "onSignup"
+      "tap #signupbtn": "onSignup",
+      "tap #signup-loginbtn": "toLogin"
     },
     initialize: function () {
       _.bindAll(this);
@@ -211,6 +212,10 @@ $(function () {
           _this.$signupbtn.removeAttr("disabled");
         }
       });
+    },
+    toLogin: function () {
+      app.router.login();
+//      this.$el.dialog("close");
     }
   });
 
@@ -220,9 +225,7 @@ $(function () {
       "add": "add",
       "view/:id": "show",
       "edit/:id": "edit",
-      "info-dialog": "about",
-      "login": "login",
-      "signup": "signup"
+      "info-dialog": "about"
     },
     initialize: function () {
       _.bindAll(this);
@@ -237,6 +240,7 @@ $(function () {
       this.collection = new MemoList();
 
       this.listView = new ListView({el: $("#index"), collection: this.collection});
+      this.listView.$el.on('pagebeforeshow', this.home);
 
       this.showView = new ShowView({el: $("#view")});
 
